@@ -1,0 +1,295 @@
+<div class="document-container">
+  <div class="sidebar">
+    <h3>{{this.username}}</h3>
+
+    <h4>Editable Documents</h4>
+    <ul>
+      {{#if this.editableDocuments.length}}
+        {{#each this.editableDocuments as |document|}}
+          <li>
+            <div class="document-item">
+              <strong>{{document.title}}</strong>
+              <button class="action-btn" {{on "click" (fn this.selectSharedDocument document)}}>Edit</button>
+            </div>
+          </li>
+        {{/each}}
+      {{else}}
+        <li>No editable documents available.</li>
+      {{/if}}
+    </ul>
+
+    <h4>View-Only Documents</h4>
+    <ul>
+      {{#if this.viewOnlyDocuments.length}}
+        {{#each this.viewOnlyDocuments as |document|}}
+          <li>
+            <div class="document-item">
+              <strong>{{document.title}}</strong>
+              <button class="action-btn" {{on "click" (fn this.selectSharedDocument document)}}>View</button>
+            </div>
+          </li>
+        {{/each}}
+      {{else}}
+        <li>No view-only documents available.</li>
+      {{/if}}
+    </ul>
+  </div>
+
+  <div class="main-content">
+    {{#if this.selectedSharedDocument}}
+      <h3>{{this.selectedSharedDocument.title}}</h3>
+      <p><strong>Owner:</strong> {{this.selectedSharedDocument.owner}}</p>
+
+      {{#if (eq this.selectedSharedDocument.accessType "edit")}}
+        <div class="action-bar">
+          <button class="action-btn" {{on "click" this.saveSharedDocument}}>Save</button>
+        </div>
+        <div class="document-editor-container">
+            <textarea
+              id="document-content"
+              rows="50"
+              cols="50"
+              value={{this.selectedSharedDocument.content}}
+              {{on "input" this.updateSharedContent}}
+              {{on "click" this.updateCursorPosition}}
+              {{on "input" this.updateCursorPosition}}
+              class="editable-textarea"
+            ></textarea>
+            <div id="highlight-marker" class="highlight-marker"></div>
+        </div>
+        <div class="virtual-keyboard">
+                <div class="keyboard-row">
+                  <button {{on "click" (fn this.togglecase)}}>
+                    {{if this.isCapsLockOn "Capslock: ON" "Capslock: OFF"}}</button>
+                </div>
+               <div class="keyboard-row">
+                        {{#each this.displayedKeys.row1 as |key|}}
+                          <button
+                            id={{concat "key-" key}}
+                            class="keyboard-key"
+                            {{on "click" (fn this.insertCharacter key)}}
+                          >
+                            {{key}}
+                          </button>
+                        {{/each}}
+                      </div>
+                      <div class="keyboard-row">
+                        {{#each this.displayedKeys.row2 as |key|}}
+                          <button
+                            id={{concat "key-" key}}
+                            class="keyboard-key"
+                            {{on "click" (fn this.insertCharacter key)}}
+                          >
+                            {{key}}
+                          </button>
+                        {{/each}}
+                      </div>
+                      <div class="keyboard-row">
+                        {{#each this.displayedKeys.row3 as |key|}}
+                          <button
+                            id={{concat "key-" key}}
+                            class="keyboard-key"
+                            {{on "click" (fn this.insertCharacter key)}}
+                          >
+                            {{key}}
+                          </button>
+                        {{/each}}
+                      </div>
+             </div>
+      {{else}}
+        <textarea
+          rows="50"
+          cols="50"
+          value={{this.selectedSharedDocument.content}}
+          readonly
+          class="readonly-textarea"
+        ></textarea>
+        <button class="action-btn" {{on "click" this.downloadDocument}}>Download</button>
+      {{/if}}
+    {{else}}
+      <p>Select a shared document to view or edit.</p>
+    {{/if}}
+  </div>
+</div>
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .document-container {
+    display: flex;
+    width: 100%;  /* Ensures the container takes up the full width */
+  }
+
+  .sidebar {
+    width: 250px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-right: 2px solid #e0e0e0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+
+  .sidebar h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+    color: #333;
+  }
+
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .sidebar li {
+    margin-bottom: 15px;
+  }
+
+  .document-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sidebar button {
+    margin-left: 10px;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .sidebar button:hover {
+    background-color: #0056b3;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    max-height: 100vh;
+    overflow: auto;
+    box-sizing: border-box;
+  }
+
+  .main-content h3 {
+    font-size: 2em;
+    color: #333;
+  }
+
+  .action-btn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .action-btn:hover {
+    background-color: #0056b3;
+  }
+
+  .editable-textarea, .readonly-textarea {
+    width: 100%;
+    height: 50vh;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: none;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+
+  .editable-textarea {
+    background-color: #fafafa;
+  }
+
+  .readonly-textarea {
+    background-color: #f4f4f4;
+    cursor: not-allowed;
+  }
+  .virtual-keyboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .keyboard-key {
+    padding: 30px;
+    width: 96px;
+    height:96px;
+    color:white;
+    justify-content:center;
+    font-size: 30px;
+    background-color: #007bff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .keyboard-key:hover {
+    background-color: #0056b3;
+  }
+
+  .action-bar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .highlight-marker {
+    position: absolute;
+    z-index: 10;
+    background-color: blue;
+    width: 2px;
+    animation: blink 1s infinite;
+  }
+
+  @media (max-width: 768px) {
+    .document-container {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .main-content {
+      padding: 15px;
+    }
+
+    .action-btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+</style>

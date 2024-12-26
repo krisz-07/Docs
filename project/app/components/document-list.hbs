@@ -1,0 +1,360 @@
+<div class="document-container">
+  <div class="sidebar">
+    <h3>{{this.username}}</h3>
+    <ul>
+      {{#if (eq this.documents.length 0)}}
+        <li>No documents available.</li>
+      {{else}}
+        {{#each this.documents as |document|}}
+          <li>
+            <div class="document-item">
+              <strong>{{document.title}}</strong>
+              <button class="view-btn" {{on "click" (fn this.selectDocument document)}}>View</button>
+            </div>
+          </li>
+        {{/each}}
+      {{/if}}
+    </ul>
+  </div>
+
+  <div class="main-content">
+    {{#if this.selectedDocument}}
+      <h3>{{this.selectedDocument.title}}</h3>
+
+      <div style="display: flex; justify-content: flex-start; align-items: center;">
+        <button class="save-btn" {{on "click" this.saveDocument}} style="margin-right: 10px;">Save</button>
+        <button class="save-btn" {{on "click" this.toggleSharePopup}}>Share</button>
+      </div>
+
+      <div class="document-container">
+        <textarea
+          id="document-content"
+          rows="50"
+          cols="50"
+          value={{this.selectedDocument.content}}
+          {{on "input" this.updateContent}}
+          {{on "click" this.updateCursorPosition}}
+          {{on "input" this.updateCursorPosition}}
+
+          class="text"
+        ></textarea>
+        <div id="marker-container" class="marker-container"></div>
+      </div>
+     <div class="virtual-keyboard">
+       <div class="keyboard-row">
+              <button class="key" id ="capsLockIndicator" {{on "click" (fn this.togglecase)}}>
+                {{if this.isCapsLockOn "Capslock: ON" "Capslock: OFF"}}</button>
+       </div>
+       <div class="keyboard-row">
+         {{#each this.keys as |key|}}
+           <button id={{concat "key-" key}} class="keyboard-key" {{on "click" (fn this.insertCharacter key)}}>
+             {{key}}
+           </button>
+         {{/each}}
+       </div>
+
+       <div class="keyboard-row">
+         {{#each this.keys1 as |key|}}
+           <button id={{concat "key-" key}} class="keyboard-key" {{on "click" (fn this.insertCharacter key)}}>
+             {{key}}
+           </button>
+         {{/each}}
+       </div>
+
+       <div class="keyboard-row">
+         {{#each this.keys2 as |key|}}
+           <button id={{concat "key-" key}} class="keyboard-key" {{on "click" (fn this.insertCharacter key)}}>
+             {{key}}
+           </button>
+         {{/each}}
+       </div>
+     </div>
+    {{else}}
+      <p>Select a document to view or edit.</p>
+    {{/if}}
+  </div>
+</div>
+
+{{#if this.isSharePopupVisible}}
+  <div class="popup-overlay">
+    <div class="popup-content">
+      <h3>Share Document</h3>
+      <form {{on "submit" this.handleShareDocument}}>
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            value={{this.usernameToShare}}
+            {{on "input" this.updateUsername}}
+            placeholder="Enter username"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="access">Access Type:</label>
+          <select value={{this.accessType}} {{on "change" this.updateAccessType}}>
+            <option value="">Select Access Type</option>
+            <option value="edit">Edit</option>
+            <option value="view">View</option>
+          </select>
+        </div>
+
+        <button type="submit">Share</button>
+        <button type="button" {{on "click" this.toggleSharePopup}}>Cancel</button>
+        <div id="qr-code-container" {{did-insert this.generateQRCode}}></div>
+      </form>
+    </div>
+  </div>
+{{/if}}
+
+<style>
+ body, html {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+   font-family: Arial, sans-serif;
+   width: 100%;
+   max-width: 100vw;
+   overflow: hidden;
+ }
+
+ .document-container {
+   display: flex;
+ }
+
+ .sidebar {
+   width: 250px;
+   background-color: #ffffff;
+   padding: 20px;
+   border-right: 2px solid #e0e0e0;
+   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+   overflow-y: auto;
+ }
+
+ .sidebar h3 {
+   margin-top: 0;
+   font-size: 1.5em;
+   color: #333;
+ }
+
+ .sidebar ul {
+   list-style-type: none;
+   padding: 0;
+ }
+
+ .sidebar li {
+   margin-bottom: 15px;
+ }
+
+ .document-item {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+ }
+
+ .sidebar button {
+   margin-left: 10px;
+   padding: 8px 15px;
+   background-color: #007bff;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+ }
+
+ .sidebar button:hover {
+   background-color: #0056b3;
+ }
+
+ .main-content {
+   flex-grow: 1;
+   padding: 20px;
+   background-color: #fff;
+   max-height: 100vh;
+   overflow: auto;
+ }
+
+ .main-content h3 {
+   font-size: 2em;
+   color: #333;
+ }
+
+ .save-btn {
+   display: block;
+   margin-bottom: 20px;
+   padding: 10px 20px;
+   background-color: #007bff;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+ }
+
+ .save-btn:hover {
+   background-color: #0056b3;
+ }
+
+textarea {
+  width: 100%;
+  height: 50vh;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+  margin-bottom: 10px;
+}
+
+.virtual-keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.keyboard-key {
+  padding: 30px;
+  width: 96px;
+  height:96px;
+  justify-content:center;
+  font-size: 30px;
+  background-color: #007bff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.key {
+  all: unset; /* Resets all inherited styles */
+  display: inline-block;
+
+  background-color: #f0f0f0; /* Default button background */
+  border: 1px solid #ccc; /* Default button border */
+  border-radius: 4px; /* Default button border radius */
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); /* Default button shadow */
+  font-family: inherit; /* Inherits font from the parent */
+  font-size: 1rem; /* Default font size */
+  color: #000; /* Default text color */
+  cursor: pointer; /* Pointer cursor for buttons */
+  text-align: center; /* Centers the text */
+}
+
+.key:hover {
+  background-color: "gray";
+}
+
+
+.keyboard-key:hover {
+  background-color: #0056b3;
+}
+
+.keyboard-key:active {
+  background-color: #d1d1d1;
+}
+
+
+ .popup-overlay {
+   position: fixed;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background: rgba(0, 0, 0, 0.5);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .popup-content {
+   background: white;
+   padding: 20px;
+   border-radius: 8px;
+   width: 300px;
+ }
+
+ .popup-content h3 {
+   margin-top: 0;
+ }
+
+ .form-group {
+   margin-bottom: 15px;
+ }
+
+ label {
+   display: block;
+   margin-bottom: 5px;
+ }
+
+ input,
+ select {
+   width: 100%;
+   padding: 8px;
+   border: 1px solid #ccc;
+   border-radius: 4px;
+ }
+
+ button {
+   padding: 10px 20px;
+   background-color: #4CAF50;
+   color: white;
+   border: none;
+   border-radius: 4px;
+   cursor: pointer;
+ }
+
+ button[type="button"] {
+   background-color: #f44336;
+ }
+
+ button[type="submit"] {
+   margin-right: 10px;
+ }
+
+ button:hover {
+   background-color: #45a049;
+ }
+
+ button[type="button"]:hover {
+   background-color: #e53935;
+ }
+
+ @keyframes blink {
+   50% {
+     opacity: 0;
+   }
+   100% {
+     opacity: 1;
+   }
+ }
+
+ .highlight-marker {
+   position: absolute;
+   z-index: 10;
+   background-color: blue;
+   width: 2px;
+   animation: blink 1s infinite;
+ }
+
+ @media (max-width: 768px) {
+   .document-container {
+     flex-direction: column;
+   }
+
+   .sidebar {
+     width: 100%;
+     border-right: none;
+     border-bottom: 1px solid #ddd;
+   }
+
+   .main-content {
+     padding: 10px;
+   }
+ }
+
+</style>

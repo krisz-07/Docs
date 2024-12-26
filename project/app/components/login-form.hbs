@@ -1,0 +1,118 @@
+{{page-title "Login"}}
+
+<div class="login-container">
+  <h2>Login</h2>
+  <form {{on "submit" this.handleLogin}}>
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      placeholder="Enter username"
+      value={{this.username}}
+      {{on "input" this.updateUsername}}
+    />
+
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter password"
+      value={{this.password}}
+      {{on "input" this.updatePassword}}
+    />
+
+    <button type="submit" class="btn btn-login">Login</button>
+  </form>
+
+  <p class="signup-redirect">
+    Don't have an account? <LinkTo @route="signup" class="signup-link">Sign up here</LinkTo>
+  </p>
+</div>
+
+<style>
+  /* Centering the login container on the page */
+  .login-container {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4; /* Light gray background */
+  }
+
+  .login-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .login-container form {
+    background-color: #fff; /* White background for the form */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for form */
+    width: 100%;
+    max-width: 400px; /* Max width to keep form size reasonable */
+  }
+
+  .login-container form label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  .login-container form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .login-container form input:focus {
+    border-color: #007bff; /* Focus border color */
+  }
+
+  .login-container form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .login-container form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  .login-container form button:focus {
+    outline: none; /* Remove outline when focused */
+  }
+
+  /* Styling for the redirect paragraph */
+  .login-container .signup-redirect {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .login-container .signup-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .login-container .signup-link:hover {
+    text-decoration: underline;
+    color: #0056b3;
+  }
+</style>

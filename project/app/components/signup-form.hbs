@@ -1,0 +1,126 @@
+{{page-title "Signup"}}
+
+<div class="signup-container">
+  <h2>Signup</h2>
+  <form {{on "submit" this.handleSignup}}>
+    <label for="username">Username</label>
+    <input
+      type="text"
+      id="username"
+      placeholder="Enter username"
+      value={{this.username}}
+      {{on "input" this.updateUsername}}
+    />
+
+    <label for="password">Password</label>
+    <input
+      type="password"
+      id="password"
+      placeholder="Enter password"
+      value={{this.password}}
+      {{on "input" this.updatePassword}}
+    />
+
+    <button type="submit" class="btn btn-signup">Signup</button>
+  </form>
+
+
+  {{#if this.errorMessage}}
+    <p class="error-message">{{this.errorMessage}}</p>
+  {{/if}}
+
+
+  <p>Already have an account? <LinkTo @route="index">Login here</LinkTo></p>
+</div>
+
+
+<style>
+
+  .signup-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+  }
+
+  .signup-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  .signup-container form {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .signup-container form label {
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  .signup-container form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  .signup-container form input:focus {
+    border-color: #007bff; /* Focus border color */
+  }
+
+  .signup-container form button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Blue button */
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .signup-container form button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  .signup-container form button:focus {
+    outline: none; /* Remove outline when focused */
+  }
+
+  .signup-container form .error-message {
+    color: red;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* Styling for the link */
+  .signup-container p {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+
+  .signup-container p a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .signup-container p a:hover {
+    text-decoration: underline;
+  }
+</style>

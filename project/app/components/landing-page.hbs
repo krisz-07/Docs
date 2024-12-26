@@ -1,0 +1,125 @@
+<div class="landing-container">
+  <div class="logout-container">
+    <button type="button" {{on "click" this.handleLogout}}>
+      Logout
+    </button>
+  </div>
+
+  <h1>Welcome, {{this.username}}!</h1>
+
+  <div class="landing-buttons">
+    <div class="first-row">
+      <button type="button" class="landing-button" {{on "click" this.createNewDocument}}>
+        Create New Document
+      </button>
+    </div>
+
+    <div class="second-row">
+      <button type="button" class="landing-button" {{on "click" this.viewCreatedDocuments}}>
+        View Created Documents
+      </button>
+
+      <button type="button" class="landing-button" {{on "click" this.viewSharedDocuments}}>
+        View Shared Documents
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Apply box-sizing globally to avoid content overflow due to padding/borders */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body, html {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+  }
+
+  .logout-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .logout-container button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .logout-container button:hover {
+    background-color: #a71d2a;
+  }
+
+  .logout-container button:focus {
+    outline: none;
+  }
+
+  .landing-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+    position: relative;
+  }
+
+  .landing-container h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+    text-align: center;
+  }
+
+  .landing-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .first-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .second-row {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .landing-button {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 250px;
+  }
+
+  .landing-button:hover {
+    background-color: #0056b3;
+  }
+
+  .landing-button:focus {
+    outline: none;
+  }
+</style>

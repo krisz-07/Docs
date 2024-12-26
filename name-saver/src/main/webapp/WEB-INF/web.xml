@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>org.example.namesaver.CORSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>DatabaseConnectionServlet</servlet-name>
+        <servlet-class>org.example.namesaver.DatabaseConnectionServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DatabaseConnectionServlet</servlet-name>
+        <url-pattern>/checkdb</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>SignupServlet</servlet-name>
+        <servlet-class>org.example.namesaver.SignupServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SignupServlet</servlet-name>
+        <url-pattern>/signup</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>org.example.namesaver.LoginServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CreateDocumentServlet</servlet-name>
+        <servlet-class>org.example.namesaver.CreateDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateDocumentServlet</servlet-name>
+        <url-pattern>/createdocument</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DocumentServlet</servlet-name>
+        <servlet-class>org.example.namesaver.DocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DocumentServlet</servlet-name>
+        <url-pattern>/document/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateDocumentServlet</servlet-name>
+        <servlet-class>org.example.namesaver.UpdateDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateDocumentServlet</servlet-name>
+        <url-pattern>/update</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShareDocumentServlet</servlet-name>
+        <servlet-class>org.example.namesaver.ShareDocumentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShareDocumentServlet</servlet-name>
+        <url-pattern>/share</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SharedDocumentsServlet</servlet-name>
+        <servlet-class>org.example.namesaver.SharedDocumentsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SharedDocumentsServlet</servlet-name>
+        <url-pattern>/shared-documents/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>GetUsernameServlet</servlet-name>
+        <servlet-class>org.example.namesaver.GetUsernameServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>GetUsernameServlet</servlet-name>
+        <url-pattern>/get-username</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>org.example.namesaver.LogoutServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DocumentServletFile</servlet-name>
+        <servlet-class>org.example.namesaver.DocumentServletFile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DocumentServletFile</servlet-name>
+        <url-pattern>/documentfile/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateDocumentServletFile</servlet-name>
+        <servlet-class>org.example.namesaver.UpdateDocumentServletFile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateDocumentServletFile</servlet-name>
+        <url-pattern>/updatefile</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
+        <servlet-name>CreateDocumentServletFile</servlet-name>
+        <servlet-class>org.example.namesaver.CreateDocumentServletFile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateDocumentServletFile</servlet-name>
+        <url-pattern>/createdocumentfile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ShareDocumentServletFile</servlet-name>
+        <servlet-class>org.example.namesaver.ShareDocumentServletFile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ShareDocumentServletFile</servlet-name>
+        <url-pattern>/sharefile</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SharedDocumentsServletFile</servlet-name>
+        <servlet-class>org.example.namesaver.SharedDocumentsServletFile</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SharedDocumentsServletFile</servlet-name>
+        <url-pattern>/shared-documentsfile/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DocumentContentServlet</servlet-name>
+        <servlet-class>org.example.namesaver.DocumentContentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DocumentContentServlet</servlet-name>
+        <url-pattern>/documentfile/content/*</url-pattern>
+    </servlet-mapping>
+</web-app>
